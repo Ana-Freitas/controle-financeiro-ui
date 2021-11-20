@@ -1,0 +1,22 @@
+{{ msg }}
+<div class="container" style="max-width: 400px; margin: auto;">
+    <form action="" autocomplete="off" #f="ngForm">
+        <div class="p-grid p-fluid">
+            <div class="p-col-12">
+                <h1>Login</h1>
+            </div>
+
+            <div class="p-col-12">
+                <input pInputText type="email" name="usuario" id="usuario"
+                placeholder="E-mail" ngModel required #usuario />    
+            </div>
+            <div class="p-col-12">
+                <input pInputText type="password" name="senha" id="senha"
+                placeholder="Senha" ngModel required #senha />    
+            </div>
+            <div class="p-col-12">
+                <button pButton type="submit" label="Login" (disable)="!f.valid" (click)="login(usuario.value, senha.value)"></button>
+            </div>
+        </div>
+    </form>
+</div>
