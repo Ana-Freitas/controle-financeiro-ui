@@ -8,6 +8,8 @@ import { AuthService } from './seguranca/auth.service';
 import { RouterModule, Routes } from '@angular/router';
 import { LancamentosListagemComponent } from './lancamentos-listagem/lancamentos-listagem.component';
 import { LoginFormComponent } from './seguranca/login-form/login-form.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
   { path: 'lancamentos', component: LancamentosListagemComponent },
@@ -24,6 +26,7 @@ const routes: Routes = [
     LancamentosModule,
     SegurancaModule,
     RouterModule.forRoot(routes),
+    CoreModule
   ],
   providers: [
     AuthService
