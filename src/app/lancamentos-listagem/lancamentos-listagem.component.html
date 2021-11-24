@@ -40,8 +40,8 @@
                 </span>
               </td>
               <td class="col-acoes-content">
-                <a pButton icon="pi pi-pencil" pToolTip="Editar" tooltipPosition="top"></a>
-                <button pButton icon="pi pi-trash" pToolTip="Excluir" tooltipPosition="top"></button>
+                <a pButton icon="pi pi-pencil" pToolTip="Editar" tooltipPosition="top" [routerLink]="['/lancamentos', lancamento.codigo]"></a>
+                <button pButton icon="pi pi-trash" pToolTip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(lancamento)"></button>
               </td>
             </tr>
           </ng-template>
@@ -49,7 +49,7 @@
       </div>
 
       <div class="p-col-12">
-        <a pButton label="Novo Lançamento"></a>
+        <a pButton label="Novo Lançamento" routerLink="/lancamentos/novo"></a>
       </div>
 
     </div>

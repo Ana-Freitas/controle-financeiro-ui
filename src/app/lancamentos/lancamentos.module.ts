@@ -38,7 +38,7 @@ import { FormsModule } from '@angular/forms';
     DropdownModule,
     CurrencyMaskModule,
     SharedModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     LancamentosListagemComponent,

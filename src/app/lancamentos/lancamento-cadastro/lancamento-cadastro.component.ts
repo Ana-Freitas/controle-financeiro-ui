@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { CategoriaService } from 'src/app/categorias/categoria.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Lancamento } from 'src/app/core/model';
 import { PessoaService } from 'src/app/pessoas/pessoa.service';
 import { LancamentoService } from '../lancamento.service';
@@ -23,22 +26,28 @@ export class LancamentoCadastroComponent implements OnInit {
   constructor(
     private categoriaService: CategoriaService,
     private pessoaService: PessoaService,
-    private lancamentoService: LancamentoService) { }
+    private lancamentoService: LancamentoService,
+    private errorHandler: ErrorHandlerService,
+    private messageService: MessageService,
+    private route: ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
+    const codigo = this.route.snapshot.params['codigo'];
+    if(codigo){
+      this.carregarLancamento(codigo);
+    }
+
     this.carregarCategorias();
     this.carregarPessoas();
   }
 
-  salvar(form: FormControl): void {
-    this.lancamentoService.adicionar(this.lancamento)
-      .then(() => {
-        console.log('Lançamento adicionado com sucesso!');
-
-        form.reset();
-        this.lancamento = new Lancamento();
-      })
-      .catch((erro:any) => console.log(erro));
+  salvar(form: NgForm): void {
+        if(this.editando){
+          this.atualizarLancamento(form);
+        }else{
+          this.adicionarLancamento(form);
+        }
   }
 
   carregarCategorias(): any {
@@ -47,7 +56,7 @@ export class LancamentoCadastroComponent implements OnInit {
         this.categorias = categorias
           .map((c:any) => ({ label: c.nome, value: c.codigo }));
       })
-      .catch(erro => console.log(erro));
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   carregarPessoas(): any {
@@ -56,7 +65,46 @@ export class LancamentoCadastroComponent implements OnInit {
         this.pessoas = pessoas
           .map((p:any) => ({ label: p.nome, value: p.codigo }));
       })
-      .catch(erro => console.log(erro));
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
+  get editando(): boolean {
+    return Boolean(this.lancamento.codigo);
+  }
+  carregarLancamento(codigo: number): void {
+    this.lancamentoService.buscarPorCodigo(codigo)
+    .then(lancamento => {
+      this.lancamento = lancamento;
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  adicionarLancamento(form: NgForm){
+    this.lancamentoService.adicionar(this.lancamento)
+    .then(() => {
+      
+      this.messageService.add(
+        {
+          severity: 'success', 
+          detail: 'Lançamento adicionado com sucesso!'
+        });
+
+      form.reset();
+      this.lancamento = new Lancamento();
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  atualizarLancamento(form: NgForm){
+    this.lancamentoService.atualizar(this.lancamento)
+    .then(lancamento => {
+      this.lancamento = lancamento;
+      this.messageService.add(
+        {
+          severity: 'success', 
+          detail: 'Lançamento alterado com sucesso!'
+        });
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
 }
