@@ -8,7 +8,7 @@ import * as moment from 'moment';
 })
 export class LancamentoService {
 
-  lancamentosUrl = 'http://localhost:8080/lancamentos';
+  lancamentosUrl = 'http://localhost:62173/lancamentos';
 
   constructor(private http: HttpClient) { }
 

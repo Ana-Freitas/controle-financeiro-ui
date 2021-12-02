@@ -6,7 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class AuthService {
-  oauthTokenUrl = 'http://localhost:8080/oauth/token';
+  oauthTokenUrl = 'http://localhost:62173/oauth/token';
   jwtPayload: any;
 
   constructor(private http: HttpClient, 
@@ -21,7 +21,8 @@ export class AuthService {
 
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
     
-    return this.http.post(this.oauthTokenUrl, body, {headers}).toPromise().then((response: any) => {
+    return this.http.post(this.oauthTokenUrl, body, { headers, withCredentials: true })
+    .toPromise().then((response: any) => {
       console.log(response);
       this.armazenarToken(response[`access_token`]);
     }).catch(response => {
@@ -35,6 +36,46 @@ export class AuthService {
     });
   }
 
+  temQualquerPermissao(roles: any): boolean {
+    for (const role of roles) {
+      if (this.temPermissao(role)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  obterNovoAccessToken(): Promise<void> {
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/x-www-form-urlencoded')
+      .append('Authorization', 'Basic Y2xpZW50OmNsaWVudA==');
+
+    const body = 'grant_type=refresh_token';
+
+    return this.http.post<any>(this.oauthTokenUrl, body,
+        { headers, withCredentials: true })
+      .toPromise()
+      .then((response: any) => {
+        this.armazenarToken(response[`access_token`]);
+
+        console.log('Novo access token criado!');
+
+        return Promise.resolve();
+      })
+      .catch(response => {
+        console.error('Erro ao renovar token.', response);
+        return Promise.resolve();
+      });
+  }
+
+  isAccessTokenInvalido(): boolean {
+    const token = localStorage.getItem('token');
+
+    return !token || this.jwtHelper.isTokenExpired(token);
+  }
+
+
   private armazenarToken(token: string): void {
     this.jwtPayload = this.jwtHelper.decodeToken(token);
     localStorage.setItem('token', token);
@@ -46,4 +87,9 @@ export class AuthService {
       this.armazenarToken(token);
     }
   }
+
+  temPermissao(permissao: string): boolean {
+    return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
+  }
+
 }

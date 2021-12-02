@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ErrorHandlerService } from '../core/error-handler.service';
 import { LancamentoService } from '../lancamentos/lancamento.service';
+import { AuthService } from '../seguranca/auth.service';
 
 @Component({
   selector: 'app-lancamentos-listagem',
@@ -18,9 +20,12 @@ export class LancamentosListagemComponent implements OnInit {
     private confirmation: ConfirmationService,
     private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
-    private router: Router){ }
+    private title: Title,
+    private router: Router,
+    public auth: AuthService){ }
 
   ngOnInit(): void {
+    this.title.setTitle("Listagem de Lançamentos");
     this.pesquisar();
   }
 
