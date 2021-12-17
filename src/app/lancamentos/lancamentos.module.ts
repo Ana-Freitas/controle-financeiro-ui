@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { TooltipModule } from 'primeng/tooltip';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { LancamentosListagemComponent } from '../lancamentos-listagem/lancamentos-listagem.component';
+import { LancamentosListagemComponent } from './lancamentos-listagem/lancamentos-listagem.component';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea'

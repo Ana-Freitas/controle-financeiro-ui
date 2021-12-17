@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class PessoaService {
 
-  pessoasUrl = 'http://localhost:62173/pessoas';
+  pessoasUrl = 'http://localhost:8080/pessoas';
 
   constructor(private http: HttpClient) { }
 

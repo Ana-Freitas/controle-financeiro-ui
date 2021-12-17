@@ -6,7 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class AuthService {
-  oauthTokenUrl = 'http://localhost:62173/oauth/token';
+  oauthTokenUrl = 'http://localhost:8080/oauth/token';
   jwtPayload: any;
 
   constructor(private http: HttpClient, 
@@ -90,6 +90,11 @@ export class AuthService {
 
   temPermissao(permissao: string): boolean {
     return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
+  }
+
+  limparAccessToken(): void {
+    localStorage.removeItem('token');
+    this.jwtPayload = null;
   }
 
 }

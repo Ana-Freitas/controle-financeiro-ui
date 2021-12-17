@@ -6,6 +6,8 @@ import { mergeMap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 
+export class NotAuthenticatedError {}
+
 @Injectable()
 export class FinanceiroHttpInterceptor implements HttpInterceptor {
 
@@ -23,6 +25,9 @@ export class FinanceiroHttpInterceptor implements HttpInterceptor {
           // método "obterNovoAccessToken" e o segundo é o retorno, que vem
           // de "handle.next(req)"
           mergeMap(() => {
+            if (this.auth.isAccessTokenInvalido()) {
+              throw new NotAuthenticatedError();
+            }
             req = req.clone({
               // adiciona o Header Authorization, obtendo-o do localStorage
               setHeaders: {

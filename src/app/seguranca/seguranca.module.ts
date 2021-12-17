@@ -8,6 +8,7 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FinanceiroHttpInterceptor } from './financeiro-http-interceptor';
 import { AuthGuard } from './auth.guard';
+import { LogoutService } from './logout.service';
 
 export function tokenGetter(): any {
   return localStorage.getItem('token');
@@ -25,8 +26,8 @@ export function tokenGetter(): any {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: ['localhost:62173'],
-        disallowedRoutes: ['http://localhost:62173/oauth/token']
+        allowedDomains: ['localhost:8080'],
+        disallowedRoutes: ['http://localhost:8080/oauth/token']
       }
     }),
   ],
@@ -40,6 +41,7 @@ export function tokenGetter(): any {
       useClass: FinanceiroHttpInterceptor,
       multi: true
     },
+    LogoutService,
     AuthGuard
   ]
 })

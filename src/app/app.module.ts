@@ -5,7 +5,6 @@ import { LancamentosModule } from './lancamentos/lancamentos.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SegurancaModule } from './seguranca/seguranca.module';
 import { RouterModule, Routes } from '@angular/router';
-import { LancamentosListagemComponent } from './lancamentos-listagem/lancamentos-listagem.component';
 import { LoginFormComponent } from './seguranca/login-form/login-form.component';
 import { CoreModule } from './core/core.module';
 
@@ -15,6 +14,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
 import { NaoAutorizadoComponent } from './core/nao-autorizado.component';
 import { AuthGuard } from './seguranca/auth.guard';
+import { LancamentosListagemComponent } from './lancamentos/lancamentos-listagem/lancamentos-listagem.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'lancamentos', pathMatch: 'full' },

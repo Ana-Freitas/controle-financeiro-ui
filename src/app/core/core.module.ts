@@ -1,6 +1,6 @@
 import { LancamentoService } from './../lancamentos/lancamento.service';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { AuthService } from '../seguranca/auth.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PessoaService } from '../pessoas/pessoa.service';
@@ -30,6 +30,7 @@ registerLocaleData(localePt);
     RouterModule
   ],
   providers: [
+    DatePipe,
     AuthService,
     LancamentoService,
     PessoaService,
